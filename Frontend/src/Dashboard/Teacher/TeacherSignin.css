@@ -1,0 +1,158 @@
+/* Container styling */
+.teacher-signin-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #0d0d0d;
+    /* Dark background */
+    position: relative;
+    padding: 0 20px;
+    /* Added padding for mobile */
+}
+
+.signin-box {
+    background: rgba(0, 0, 0, 0.8);
+    /* Slightly transparent box */
+    padding: 40px;
+    border-radius: 10px;
+    width: 100%;
+    /* Full width */
+    max-width: 400px;
+    /* Maximum width */
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+    /* Subtle glow effect */
+    margin: 0 auto;
+    /* Centering on larger screens */
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #fff !important;
+    /* Heading color */
+}
+
+.signin-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #dde4ea;
+    /* Label text color */
+}
+
+.form-input {
+    width: 100%;
+    border-radius: 30px !important;
+    padding: 15px;
+    /* Increased padding for better usability */
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Transparent input background */
+    border: 1px solid rgba(0, 240, 255, 0.5);
+    /* Aqua border */
+    transition: border 0.3s ease;
+    color: #dadce7fa;
+    /* Text color inside input */
+}
+
+.form-input:focus {
+    border-color: #00f0ff;
+    /* Aqua border on focus */
+    outline: none;
+}
+
+/* Aqua button with glow on hover */
+button.btn-primary {
+    width: 100%;
+    padding: 15px;
+    /* Increased padding for better usability */
+    background-color: #00f0ff;
+    /* Aqua color */
+    color: white;
+    border: none;
+    box-shadow: 5px 5px 30px aqua;
+    border-radius: 50px !important;
+    cursor: pointer;
+    font-size: 1.2rem;
+    /* Increased font size */
+    text-transform: uppercase;
+    transition: box-shadow 0.4s ease, background-color 0.4s ease;
+}
+
+/* Message styling */
+.message {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    width: 100%;
+}
+
+.message.success {
+    background-color: #28a745;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.message.error {
+    background-color: #ff4c4c;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+p a {
+    color: #00f0ff;
+    /* Aqua color for links */
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .signin-box {
+        padding: 20px;
+        /* Reduced padding on mobile */
+        width: 100%;
+        /* Use full width on mobile */
+        margin: auto;
+        /* Center the box */
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+        /* Less shadow for mobile */
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        /* Reduced font size for heading */
+    }
+
+    .form-input {
+        padding: 10px;
+        /* Adjusted padding for inputs */
+    }
+
+    button.btn-primary {
+        padding: 10px;
+        /* Adjusted padding for button */
+        font-size: 1rem;
+        /* Reduced font size for button */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+        /* Further reduced font size for smaller screens */
+    }
+
+    button.btn-primary {
+        font-size: 0.9rem;
+        /* Further reduced font size for button */
+    }
+}

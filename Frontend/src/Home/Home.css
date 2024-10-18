@@ -1,0 +1,139 @@
+/* Set up a full-screen dark animated background */
+.home-container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    /* Dark colors */
+    background-size: 400% 400%;
+    animation: gradientAnimation 10s ease infinite;
+    overflow: hidden;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    /* Darker overlay */
+}
+
+/* Gradient animation for background */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Central content styling */
+.content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+}
+
+/* Title and subtitle styling */
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.subtitle {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* Button container and button styling */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.3rem;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    color: #fff;
+    transition: all 0.4s ease;
+}
+
+/* Glowing aqua buttons */
+.teacher-btn,
+.student-btn {
+    background-color: transparent;
+    color: aqua !important;
+    border: 2px solid #00ffff;
+    /* Aqua color */
+    box-shadow: 0 0 5px #00ffff, 0 0 5px #00ffff, 0 0 30px #00ffff;
+    /* Glowing effect */
+    color: #00ffff;
+}
+
+/* Button hover effect */
+.btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff;
+}
+
+/* Button animations */
+.animated-btn {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    margin-bottom: 1rem;
+}
+
+.teacher-btn {
+    animation: fadeInUp 1s forwards 0.4s;
+}
+
+.student-btn {
+    animation: fadeInUp 1s forwards 0.9s;
+}
+
+/* Fade-in animation for buttons */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .button-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
