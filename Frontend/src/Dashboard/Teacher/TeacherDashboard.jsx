@@ -8,20 +8,29 @@ function TeacherDashboard() {
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({});
   const [attendanceSummary, setAttendanceSummary] = useState(null); // State for summary
+  const [error, setError] = useState(null); // State for error handling
   const location = useLocation(); // Get teacher details from navigation state
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
         const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/api/v1/studs/students`); // Use environment variable
+        console.log('Fetched Students:', response.data); // Log to inspect the data
         setStudents(response.data);
-        const initialAttendance = response.data.reduce((acc, student) => {
-          acc[student.rollNumber] = 'Present';
-          return acc;
-        }, {});
-        setAttendance(initialAttendance);
+
+        // Check if response data is an array
+        if (Array.isArray(response.data)) {
+          const initialAttendance = response.data.reduce((acc, student) => {
+            acc[student.rollNumber] = 'Present';
+            return acc;
+          }, {});
+          setAttendance(initialAttendance);
+        } else {
+          throw new Error('Unexpected response format');
+        }
       } catch (error) {
         console.log('Failed to fetch students', error);
+        setError('Failed to fetch students. Please try again later.'); // Set error message
       }
     };
 
@@ -113,6 +122,8 @@ function TeacherDashboard() {
     <div className='main'>
       <h1 className='text-center mb-5 pt-5 '>Teacher Dashboard</h1>
 
+      {error && <div className="error">{error}</div>} {/* Display error message */}
+
       <div className="dashboard-container">
         {/* Teacher Info Card */}
         <div className="card teacher-info">
@@ -143,24 +154,28 @@ function TeacherDashboard() {
       </div>
 
       <div className="data">
-        {students.map((student) => (
-          <div className="student" id={student.rollNumber} key={student._id}>
-            <p><b>{student.rollNumber}</b></p>
-            <p><b>{student.name}</b></p>
-            <button
-              className={`btn ${attendance[student.rollNumber] === 'Present' ? 'btn-success' : 'btn-light'}`}
-              onClick={() => handleAttendance(student.rollNumber, 'Present')}
-            >
-              Present
-            </button>
-            <button
-              className={`btn ${attendance[student.rollNumber] === 'Absent' ? 'btn-danger' : 'btn-light'} absent`}
-              onClick={() => handleAttendance(student.rollNumber, 'Absent')}
-            >
-              Absent
-            </button>
-          </div>
-        ))}
+        {students.length > 0 ? ( // Check if students array is not empty
+          students.map((student) => (
+            <div className="student" id={student.rollNumber} key={student._id}>
+              <p><b>{student.rollNumber}</b></p>
+              <p><b>{student.name}</b></p>
+              <button
+                className={`btn ${attendance[student.rollNumber] === 'Present' ? 'btn-success' : 'btn-light'}`}
+                onClick={() => handleAttendance(student.rollNumber, 'Present')}
+              >
+                Present
+              </button>
+              <button
+                className={`btn ${attendance[student.rollNumber] === 'Absent' ? 'btn-danger' : 'btn-light'} absent`}
+                onClick={() => handleAttendance(student.rollNumber, 'Absent')}
+              >
+                Absent
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>No students available.</p> // Message when no students are available
+        )}
       </div>
 
       <button className='btn btn-success submit' onClick={handleSubmit}>Submit</button>
