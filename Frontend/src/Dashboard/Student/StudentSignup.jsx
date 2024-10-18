@@ -22,7 +22,7 @@ function StudentSignup() {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/studs/signup",
+        `${import.meta.env.REACT_APP_API_URL}/api/v1/studs/signup`, // Use the environment variable
         formData
       );
       if (response.status === 201) {

@@ -23,7 +23,7 @@ function StudentSignin() {
     setMessage(""); // Clear any previous message
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/studs/signin",
+        `${import.meta.env.REACT_APP_API_URL}/api/v1/studs/signin`, // Use the environment variable
         formData
       );
       if (response.status === 200) {

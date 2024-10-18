@@ -25,7 +25,8 @@ function TeacherSignup() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/teach/signup', formData);
+      // Use the backend URL from the environment variable
+      const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/signup`, formData);
       if (response.status === 201) {
         setShowSuccess(true);
         setTimeout(() => {

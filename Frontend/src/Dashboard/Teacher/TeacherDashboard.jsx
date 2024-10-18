@@ -13,7 +13,7 @@ function TeacherDashboard() {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.post('http://localhost:4000/api/v1/studs/students');
+        const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/api/v1/studs/students`); // Use environment variable
         setStudents(response.data);
         const initialAttendance = response.data.reduce((acc, student) => {
           acc[student.rollNumber] = 'Present';
