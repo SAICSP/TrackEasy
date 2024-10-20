@@ -17,8 +17,7 @@ app.use("/api/v1/studs", studRoutes);
 app.use("/api/v1/teach", teachRoutes);
 
 mongoose.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    
 })
 .then(() => {
     console.log('Connected to MongoDB');
