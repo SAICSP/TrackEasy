@@ -24,7 +24,7 @@ function TeacherValidation() {
     event.preventDefault();
     // Pass all teacher details to TeacherDashboard
     navigate('/teacherdashboard', { 
-      state: { ...formData, phno: location.state.phno, name: location.state.name } 
+      state: { ...formData, phno: location.state.phno, name: location.state.name,email:location.state.email } 
     });
   };
 

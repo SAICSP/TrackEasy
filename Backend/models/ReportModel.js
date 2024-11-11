@@ -1,22 +1,46 @@
 import { Schema } from "mongoose";
-
-const reportSchema = new Schema({
-  subject: String,
-  date: String,
-  time: String,
-  year: String,
-  section: String,
-  totalPresent: Number,
-  totalAbsent: Number,
-  records: [{ studentId: mongoose.Schema.Types.ObjectId, status: String }]
+import { mongoose } from "mongoose";
+// Create a schema for attendance
+const attendanceSchema = new mongoose.Schema({
+    teacherName: {
+        type: String,
+        required: true
+    },
+    subject: {
+        type: String,
+        required: true
+    },
+    branch: {
+        type: String,
+        required: true
+    },
+    section: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: Number,
+        required: true
+    },
+    date: {
+        type: Date,
+        required: true,
+        default: Date.now
+    },
+    presentees: {
+        type: Number,
+        required: true
+    },
+    absentees: {
+        type: Number,
+        required: true
+    },
+    absenteeRollNumbers: {
+        type: [String], 
+        required: true
+    }
 });
 
-const Report=mongoose.model("Report",reportSchema);
-export {Report};
+const Report = mongoose.model('Report', attendanceSchema);
 
-
-
-
-
-
-
+export{ Report};

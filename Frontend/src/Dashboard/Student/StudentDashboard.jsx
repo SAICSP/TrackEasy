@@ -1,10 +1,11 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
-import 'chart.js/auto'; // Ensures that Chart.js is registered properly
-import './StudentDashboard.css'
+import 'chart.js/auto'; 
+import './StudentDashboard.css';
 
 function StudentDashboard() {
-  const location = useLocation(); // Get student details from navigation state
+  const location = useLocation(); 
+  const navigate = useNavigate(); 
 
   // Attendance data for the chart
   const data = {
@@ -18,22 +19,31 @@ function StudentDashboard() {
     ],
   };
 
-  
   const options = {
     maintainAspectRatio: false,
+  };
+
+  // Logout function
+  const handleLogout = () => {
+    // Clear any session or local storage data if needed
+    localStorage.removeItem('studentToken'); // Example if you store a token
+    navigate('/studentsignin'); // Redirect to the student sign-in page
   };
 
   return (
     <div className="student-dashboard-container">
       <div className="student-info-card">
-        <h2 className='text-center p-5'>Student Dashboard</h2>
-        <p className='mx-5'><strong>Roll Number:</strong> {location.state.rollNumber}</p>
-        <p className='mx-5'><strong>Name:</strong> {location.state.name}</p>
-        <p className='mx-5'><strong>Attendance Percentage:</strong> 100%</p>
+        <h2 className="text-center p-5">Student Dashboard</h2>
+        <p className="mx-5"><strong>Roll Number:</strong> {location.state.rollNumber}</p>
+        <p className="mx-5"><strong>Name:</strong> {location.state.name}</p>
+        <p className="mx-5"><strong>Attendance Percentage:</strong> 100%</p>
+        <button className="logout-button mx-5 mt-4" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
 
       <div className="attendance-chart-card">
-        <h3 className='text-center'>Attendance Summary</h3>
+        <h3 className="text-center">Attendance Summary</h3>
         <div className="chart-container">
           <Pie data={data} options={options} />
         </div>
@@ -43,4 +53,3 @@ function StudentDashboard() {
 }
 
 export default StudentDashboard;
-    

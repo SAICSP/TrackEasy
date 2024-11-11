@@ -10,6 +10,7 @@ import StudentDashboard from './Dashboard/Student/StudentDashboard.jsx'
 import TeacherDashboard from './Dashboard/Teacher/TeacherDashboard.jsx'
 import './main.css'
 import TeacherValidation from './Dashboard/Teacher/TeacherValidation.jsx'
+import ViewReport from './Dashboard/Report/ViewReport.jsx'
 
 
 
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')).render(
     <Route path='/teacherdashboard' element={<TeacherDashboard/>}/>
     <Route path='/studentdashboard' element={<StudentDashboard/>}/>
     <Route path='/teachervalidate' element={<TeacherValidation/>}/>
+    <Route path='/viewreports' element={<ViewReport/>}/>
     <Route path='*' element={<NotFound/>}/>
   </Routes>
   </BrowserRouter>  

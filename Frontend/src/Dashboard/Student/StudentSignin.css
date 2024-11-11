@@ -84,3 +84,16 @@ p a {
 p a:hover {
     text-decoration: underline;
 }
+.logout-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.logout-button:hover {
+    background-color: #e57373;
+}

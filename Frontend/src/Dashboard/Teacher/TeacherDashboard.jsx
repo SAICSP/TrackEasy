@@ -1,36 +1,28 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
 import './TeacherDashboard.css';
 
 function TeacherDashboard() {
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({});
-  const [attendanceSummary, setAttendanceSummary] = useState(null); // State for summary
-  const [error, setError] = useState(null); // State for error handling
-  const location = useLocation(); // Get teacher details from navigation state
+  const [attendanceSummary, setAttendanceSummary] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/api/v1/studs/students`); // Use environment variable
-        console.log('Fetched Students:', response.data); // Log to inspect the data
+        const response = await axios.post('http://localhost:4000/api/v1/studs/students');
         setStudents(response.data);
-
-        // Check if response data is an array
-        if (Array.isArray(response.data)) {
-          const initialAttendance = response.data.reduce((acc, student) => {
-            acc[student.rollNumber] = 'Present';
-            return acc;
-          }, {});
-          setAttendance(initialAttendance);
-        } else {
-          throw new Error('Unexpected response format');
-        }
+        const initialAttendance = response.data.reduce((acc, student) => {
+          acc[student.rollNumber] = 'Present';
+          return acc;
+        }, {});
+        setAttendance(initialAttendance);
       } catch (error) {
-        console.log('Failed to fetch students', error);
-        setError('Failed to fetch students. Please try again later.'); // Set error message
+        console.error('Failed to fetch students:', error);
       }
     };
 
@@ -55,11 +47,10 @@ function TeacherDashboard() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const presenteesCount = Object.values(attendance).filter(status => status === 'Present').length;
     const absenteesCount = Object.values(attendance).filter(status => status === 'Absent').length;
     const absenteesRollNumbers = Object.keys(attendance).filter(rollNumber => attendance[rollNumber] === 'Absent');
-
     const today = new Date().toLocaleDateString();
 
     setAttendanceSummary({
@@ -74,8 +65,6 @@ function TeacherDashboard() {
       absenteesRollNumbers: absenteesRollNumbers.join(', '),
     });
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
     const summaryContent = `
       Name: ${location.state.name}
       Subject: ${location.state.subject}
@@ -89,12 +78,47 @@ function TeacherDashboard() {
     `;
 
     const blob = new Blob([summaryContent], { type: 'text/plain' });
-
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = `Report_${today.replace(/\//g, '-')}.txt`;
-
     link.click();
+
+    const attendanceData = {
+      teacherName: location.state.name,
+      subject: location.state.subject,
+      branch: location.state.branch,
+      section: location.state.section,
+      year: location.state.year,
+      date: today,
+      presentees: presenteesCount,
+      absentees: absenteesCount,
+      absenteeRollNumbers: absenteesRollNumbers,
+    };
+
+    
+
+    try {
+    await axios.post('http://localhost:4000/api/v1/attend/save', attendanceData);
+
+    // Send email with attendance report
+    await axios.post('http://localhost:4000/api/v1/email/sendreport', {
+      teacherEmail: location.state.email,
+      attendanceSummary: attendanceData,
+    });
+
+    
+
+  } catch (error) {
+    console.error("Error sending attendance report:", error);
+  }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+   const handleLogout = () => {
+  
+    localStorage.removeItem('teacherToken');
+    navigate('/teachersignin'); 
   };
 
   const renderChart = () => {
@@ -105,7 +129,7 @@ function TeacherDashboard() {
       datasets: [
         {
           data: [attendanceSummary.presenteesCount, attendanceSummary.absenteesCount],
-          backgroundColor: ['#4caf50', '#f44336'], // Green for presentees, red for absentees
+          backgroundColor: ['#4caf50', '#f44336'],
           hoverBackgroundColor: ['#66bb6a', '#e57373'],
         },
       ],
@@ -122,10 +146,7 @@ function TeacherDashboard() {
     <div className='main'>
       <h1 className='text-center mb-5 pt-5 '>Teacher Dashboard</h1>
 
-      {error && <div className="error">{error}</div>} {/* Display error message */}
-
       <div className="dashboard-container">
-        {/* Teacher Info Card */}
         <div className="card teacher-info">
           <h2 className='text-center'> Teacher Details</h2>
           <p><strong>Name:</strong> {location.state.name}</p>
@@ -134,9 +155,10 @@ function TeacherDashboard() {
           <p><strong>Branch:</strong> {location.state.branch}</p>
           <p><strong>Section:</strong> {location.state.section}</p>
           <p><strong>Year:</strong> {location.state.year}</p>
+          <button onClick={() => navigate('/viewreports')}><strong>View Report</strong></button>
+          <button className="logout-button" onClick={handleLogout}><strong>Logout</strong></button>
         </div>
 
-        {/* Attendance Summary Card */}
         {attendanceSummary && (
           <div className="card attendance-summary">
             <h3>Attendance Summary</h3>
@@ -146,36 +168,30 @@ function TeacherDashboard() {
             <p><strong>Presentees:</strong> {attendanceSummary.presenteesCount}</p>
             <p><strong>Absentees:</strong> {attendanceSummary.absenteesCount}</p>
             <p><strong>Absentees Roll Numbers:</strong> {attendanceSummary.absenteesRollNumbers}</p>
-
-            {/* Render Attendance Chart */}
             {renderChart()}
           </div>
         )}
       </div>
 
       <div className="data">
-        {students.length > 0 ? ( // Check if students array is not empty
-          students.map((student) => (
-            <div className="student" id={student.rollNumber} key={student._id}>
-              <p><b>{student.rollNumber}</b></p>
-              <p><b>{student.name}</b></p>
-              <button
-                className={`btn ${attendance[student.rollNumber] === 'Present' ? 'btn-success' : 'btn-light'}`}
-                onClick={() => handleAttendance(student.rollNumber, 'Present')}
-              >
-                Present
-              </button>
-              <button
-                className={`btn ${attendance[student.rollNumber] === 'Absent' ? 'btn-danger' : 'btn-light'} absent`}
-                onClick={() => handleAttendance(student.rollNumber, 'Absent')}
-              >
-                Absent
-              </button>
-            </div>
-          ))
-        ) : (
-          <p>No students available.</p> // Message when no students are available
-        )}
+        {students.map((student) => (
+          <div className="student" id={student.rollNumber} key={student._id}>
+            <p><b>{student.rollNumber}</b></p>
+            <p><b>{student.name}</b></p>
+            <button
+              className={`btn ${attendance[student.rollNumber] === 'Present' ? 'btn-success' : 'btn-light'}`}
+              onClick={() => handleAttendance(student.rollNumber, 'Present')}
+            >
+              Present
+            </button>
+            <button
+              className={`btn ${attendance[student.rollNumber] === 'Absent' ? 'btn-danger' : 'btn-light'} absent`}
+              onClick={() => handleAttendance(student.rollNumber, 'Absent')}
+            >
+              Absent
+            </button>
+          </div>
+        ))}
       </div>
 
       <button className='btn btn-success submit' onClick={handleSubmit}>Submit</button>

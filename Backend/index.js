@@ -4,21 +4,24 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import studRoutes from './routes/StudRoute.js'; 
 import teachRoutes from './routes/TeachRoute.js'
+import repRoutes from './routes/ReportRoute.js'
+import emailRoutes from './routes/EmailRoute.js'
 // import whatsappRoute from './routes/WhatsappRoute.js'
 dotenv.config();
 
 const app = express();
 const port = 4000;
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 app.use(express.urlencoded({ limit: "40kb", extended: true }));   
 app.use("/api/v1/studs", studRoutes);
 app.use("/api/v1/teach", teachRoutes);
+app.use("/api/v1/attend", repRoutes);
+app.use("/api/v1/email",emailRoutes);
 
 mongoose.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    
 })
 .then(() => {
     console.log('Connected to MongoDB');
