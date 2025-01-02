@@ -22,7 +22,7 @@ function StudentSignup() {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/studs/signup",
+        "https://trackeasy-vcfj.onrender.com/api/v1/studs/signup",
         formData
       );
       if (response.status === 201) {

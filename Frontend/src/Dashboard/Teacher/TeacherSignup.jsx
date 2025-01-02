@@ -25,7 +25,7 @@ function TeacherSignup() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/teach/signup', formData);
+      const response = await axios.post('https://trackeasy-vcfj.onrender.com/api/v1/teach/signup', formData);
       if (response.status === 201) {
         setShowSuccess(true);
         setTimeout(() => {

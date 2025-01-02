@@ -27,7 +27,7 @@ function StudentDashboard() {
   const handleLogout = () => {
     // Clear any session or local storage data if needed
     localStorage.removeItem('studentToken'); // Example if you store a token
-    navigate('/studentsignin'); // Redirect to the student sign-in page
+    navigate('/'); // Redirect to the student sign-in page
   };
 
   return (

@@ -14,7 +14,7 @@ function TeacherDashboard() {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.post('http://localhost:4000/api/v1/studs/students');
+        const response = await axios.post('https://trackeasy-vcfj.onrender.com/api/v1/studs/students');
         setStudents(response.data);
         const initialAttendance = response.data.reduce((acc, student) => {
           acc[student.rollNumber] = 'Present';
@@ -98,28 +98,28 @@ function TeacherDashboard() {
     
 
     try {
-    await axios.post('http://localhost:4000/api/v1/attend/save', attendanceData);
+  await axios.post('https://trackeasy-vcfj.onrender.com/api/v1/attend/save', attendanceData);
+  await axios.post('https://trackeasy-vcfj.onrender.com/api/v1/email/sendreport', {
+    teacherEmail: location.state.email,
+    attendanceSummary: attendanceData,
+  });
+  alert('Attendance data saved and email sent successfully!');
+} catch (error) {
+  console.error('Error:', error);
+  alert('Failed to submit attendance or send email. Please try again.');
+}
 
-    // Send email with attendance report
-    await axios.post('http://localhost:4000/api/v1/email/sendreport', {
-      teacherEmail: location.state.email,
-      attendanceSummary: attendanceData,
-    });
-
-    
-
-  } catch (error) {
-    console.error("Error sending attendance report:", error);
-  }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
    const handleLogout = () => {
-  
+  if (window.confirm('Are you sure you want to logout?')) {
     localStorage.removeItem('teacherToken');
-    navigate('/teachersignin'); 
-  };
+    navigate('/');
+  }
+};
+
 
   const renderChart = () => {
     if (!attendanceSummary) return null;
