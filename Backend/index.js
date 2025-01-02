@@ -6,7 +6,7 @@ import studRoutes from './routes/StudRoute.js';
 import teachRoutes from './routes/TeachRoute.js'
 import repRoutes from './routes/ReportRoute.js'
 import emailRoutes from './routes/EmailRoute.js'
-// import whatsappRoute from './routes/WhatsappRoute.js'
+
 dotenv.config();
 
 const app = express();
