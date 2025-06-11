@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 const port = 4000;
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: 'https://trackeasy500075.onrender.com/' }));
 app.use(express.json());
 app.use(express.urlencoded({ limit: "40kb", extended: true }));   
 app.use("/api/v1/studs", studRoutes);
