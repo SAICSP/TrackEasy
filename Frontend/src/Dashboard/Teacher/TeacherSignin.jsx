@@ -3,6 +3,8 @@ import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import './TeacherSignin.css';
+import server from "../../environment.js";
+
 
 function TeacherSignin() {
   const [formData, setFormData] = useState({
@@ -25,7 +27,7 @@ function TeacherSignin() {
     event.preventDefault();
     setMessage(null);
     try {
-      const response = await axios.post('https://trackeasy-vcfj.onrender.com/api/v1/teach/signin', formData);
+      const response = await axios.post(`${server}/api/v1/teach/signin`, formData);
       if (response.status === 200) {
         setMessage("Signin successful! Redirecting...");
         setMessageType("success");

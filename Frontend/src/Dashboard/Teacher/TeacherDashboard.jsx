@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
 import './TeacherDashboard.css';
+import server from "../../environment.js";
+
 
 function TeacherDashboard() {
   const [students, setStudents] = useState([]);
@@ -14,7 +16,7 @@ function TeacherDashboard() {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.post('https://trackeasy-vcfj.onrender.com/api/v1/studs/students');
+        const response = await axios.post(`${server}/api/v1/studs/students`);
         setStudents(response.data);
         const initialAttendance = response.data.reduce((acc, student) => {
           acc[student.rollNumber] = 'Present';
@@ -83,7 +85,7 @@ function TeacherDashboard() {
     link.download = `Report_${today.replace(/\//g, '-')}.txt`;
     link.click();
 
-    const attendanceData = {
+    const attendanceSummary = {
       teacherName: location.state.name,
       subject: location.state.subject,
       branch: location.state.branch,
@@ -98,22 +100,20 @@ function TeacherDashboard() {
     
 
     try {
-  await axios.post('https://trackeasy-vcfj.onrender.com/api/v1/attend/save', attendanceData);
-  await axios.post('https://trackeasy-vcfj.onrender.com/api/v1/email/sendreport', {
+  await axios.post(`${server}/api/v1/attend/save`, attendanceSummary);
+  await axios.post(`${server}/api/v1/email/sendreport`, {
     teacherEmail: location.state.email,
-    attendanceSummary: attendanceData,
+    attendanceSummary,
   });
   alert('Attendance data saved and email sent successfully!');
 } catch (error) {
   console.error('Error:', error);
   alert('Failed to submit attendance or send email. Please try again.');
 }
-
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-   const handleLogout = () => {
+  const handleLogout = () => {
   if (window.confirm('Are you sure you want to logout?')) {
     localStorage.removeItem('teacherToken');
     navigate('/');

@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import './StudentSignup.css'; // Add your custom styles
+import server from "../../environment.js";
+
 
 function StudentSignup() {
   const [formData, setFormData] = useState({
@@ -22,7 +24,7 @@ function StudentSignup() {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "https://trackeasy-vcfj.onrender.com/api/v1/studs/signup",
+        `${server}/api/v1/studs/signup`,
         formData
       );
       if (response.status === 201) {

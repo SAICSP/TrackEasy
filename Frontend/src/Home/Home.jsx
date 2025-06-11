@@ -18,6 +18,9 @@ function Home() {
       <div className="content">
         <h1 className="title">Welcome to TrackEasy</h1>
         <h2 className="subtitle">Login as a</h2>
+          
+        <div id="logos"><i className="fa-solid fa-user"></i>
+          <i className="fa-solid fa-users"></i></div>
         <div className="button-container">
           <button 
             className="btn teacher-btn animated-btn" 

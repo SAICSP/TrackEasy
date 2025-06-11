@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import './StudentSignin.css'; // Add your custom styles
+import server from "../../environment.js";
+
 
 function StudentSignin() {
   const [formData, setFormData] = useState({
@@ -23,7 +25,7 @@ function StudentSignin() {
     setMessage(""); // Clear any previous message
     try {
       const response = await axios.post(
-        "https://trackeasy-vcfj.onrender.com/api/v1/studs/signin",
+        `${server}/api/v1/studs/signin`,
         formData
       );
       if (response.status === 200) {

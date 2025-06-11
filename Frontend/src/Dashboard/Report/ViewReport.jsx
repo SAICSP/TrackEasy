@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ViewReport.css';
-    
+import server from '../../environment.js';    
 function ViewReport() {
   const [reports, setReports] = useState([]);
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await axios.get('https://trackeasy-vcfj.onrender.com/api/v1/attend/getreports');
+        const response = await axios.get(`${server}/api/v1/attend/getreports`);
         
         // Sort reports by date in descending order
         const sortedReports = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
