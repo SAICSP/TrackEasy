@@ -13,6 +13,13 @@ export const save = async (req, res) => {
     absenteeRollNumbers 
   } = req.body;
 
+  // Add validation
+  if (!teacherName || !subject || !branch || !section || !year || !date) {
+    return res.status(400).json({
+      message: "Missing required fields"
+    });
+  }
+
   try {
     const newReport = new Report({
       teacherName,

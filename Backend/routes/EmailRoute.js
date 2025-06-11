@@ -3,6 +3,6 @@ import { sendAttendanceReport } from '../controllers/EmailController.js';
 
 const router = express.Router();
 
-router.post('/sendreport', sendAttendanceReport);
+router.route("/sendreport").post(sendAttendanceReport);
 
 export default router;

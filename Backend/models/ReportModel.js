@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 import { mongoose } from "mongoose";
-// Create a schema for attendance
+
 const attendanceSchema = new mongoose.Schema({
     teacherName: {
         type: String,

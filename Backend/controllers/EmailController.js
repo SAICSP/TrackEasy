@@ -3,10 +3,8 @@ import nodemailer from 'nodemailer';
 const sendAttendanceReport = async (req, res) => {
   const { teacherEmail, attendanceSummary } = req.body;
 
-  // Debug log for request body
   console.log('Request Body:', req.body);
 
-  // Check if attendanceSummary exists
   if (!attendanceSummary) {
     return res.status(400).json({ error: 'Attendance summary is missing in the request' });
   }
@@ -24,7 +22,10 @@ const sendAttendanceReport = async (req, res) => {
     absenteeRollNumbers,
   } = attendanceSummary;
 
-  
+ 
+
+  console.log('Sending email to:', teacherEmail); // Log the recipient
+  console.log("Preparing to send email");
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -34,18 +35,16 @@ const sendAttendanceReport = async (req, res) => {
     },
   });
 
-  const emailContent = `
-    <h3>Attendance Report</h3>
-    <p><strong>Teacher Name:</strong> ${teacherName || 'N/A'}</p>
-    <p><strong>Subject:</strong> ${subject || 'N/A'}</p>
-    <p><strong>Branch:</strong> ${branch || 'N/A'}</p>
-    <p><strong>Section:</strong> ${section || 'N/A'}</p>
-    <p><strong>Year:</strong> ${year || 'N/A'}</p>
-    <p><strong>Date:</strong> ${date || 'N/A'}</p>
-    <p><strong>Presentees:</strong> ${presentees || 0}</p>
-    <p><strong>Absentees:</strong> ${absentees || 0}</p>
-    <p><strong>Absentees Roll Numbers:</strong> ${absenteeRollNumbers?.join(', ') || 'None'}</p>
-  `;
+  const emailContent = `<h3>Attendance Report</h3>
+    <p><strong>Teacher Name:</strong> ${teacherName}</p>
+    <p><strong>Subject:</strong> ${subject}</p>
+    <p><strong>Branch:</strong> ${branch}</p>
+    <p><strong>Section:</strong> ${section}</p>
+    <p><strong>Year:</strong> ${year}</p>
+    <p><strong>Date:</strong> ${date}</p>
+    <p><strong>Presentees:</strong> ${presentees}</p>
+    <p><strong>Absentees:</strong> ${absentees}</p>
+    <p><strong>Absentee Roll Numbers:</strong> ${absenteeRollNumbers.join(', ')}</p>`;
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -53,6 +52,7 @@ const sendAttendanceReport = async (req, res) => {
     subject: 'Attendance Report',
     html: emailContent,
   };
+
 
   try {
     const info = await transporter.sendMail(mailOptions);
@@ -63,5 +63,6 @@ const sendAttendanceReport = async (req, res) => {
     res.status(500).json({ error: 'Failed to send attendance report' });
   }
 };
+
 
 export { sendAttendanceReport };
