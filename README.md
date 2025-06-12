@@ -40,7 +40,7 @@ You must have 2-Step Verification enabled on your Google Account.
 
 You must be logged into your Google account on your browser.
 
-1.search app password in search bar
-2.create a name for passkey
-3.get passkey for there and use in env 
+1.search app password in search bar<br>
+2.create a name for passkey<br>
+3.get passkey for there and use in env <br>
 
