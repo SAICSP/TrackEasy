@@ -12,13 +12,13 @@ MongoDB Atlas (or local MongoDB setup)
 # git clone https://github.com/SAICSP/TrackEasy.git
 
 # Backend Setup
-``cd Backend 
-npm install 
-npm start``
+``cd Backend ``<br>
+``npm install ``<br>
+``npm start``
 
 # Frontend Setup
 ``cd Frontend`` <br>
-```npm install```
+```npm install``` <br>
 ``npm run dev
 ``
 # API Endpoints
