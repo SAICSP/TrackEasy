@@ -6,8 +6,9 @@ TrackEasy is a web-based attendance management system built using the MERN stack
 # Installation and Setup :
 Prerequisites
 
-Node.js
-MongoDB Atlas (or local MongoDB setup)
+1 . Node.js - ``https://nodejs.org`` <br> 
+2 . MongoDB Atlas (or local MongoDB setup) - ``https://www.mongodb.com`` <br>
+3 . React  - ``https://react.dev``<br>
 
 # git clone https://github.com/SAICSP/TrackEasy.git
 
